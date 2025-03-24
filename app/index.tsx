@@ -3,7 +3,7 @@ import { Clock, Compass, Calendar, Settings } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import React from 'react';
 
-const NAVBAR_HEIGHT = 60;
+const NAVBAR_HEIGHT = 70;
 
 export default function App() {
   const insets = useSafeAreaInsets();
