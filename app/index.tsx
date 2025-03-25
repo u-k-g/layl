@@ -199,11 +199,11 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		backgroundColor: 'rgba(255, 255, 255, 0.2)',
 		width: 50, // Adjust size as needed
-		height: 32, // Adjust size as needed
+		height: 34, // Adjust size as needed
 		borderRadius: 50, // Half of width/height for oval shape
 		zIndex: -1, // Ensure it's behind the icon
     top: '50%',      // Position the top edge at the vertical center of the Pressable
     left: '50%',     // Position the left edge at the horizontal center of the Pressable
-    transform: [{ translateX: -25 }, { translateY: -16 }], // Shift it up and left by half of its width and height to truly center
+    transform: [{ translateX: -25 }, { translateY: -17 }], // Shift it up and left by half of its width and height to truly center
 	},
 });
