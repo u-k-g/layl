@@ -1,5 +1,6 @@
 {
-    "conventionalCommits.scopes": [
-        "navbar"
-    ]
+	"conventionalCommits.scopes": [
+		"navbar",
+		"theme"
+	]
 }
