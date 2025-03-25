@@ -46,7 +46,7 @@ export default function TabLayout() {
 								}
 							};
 
-							let icon;
+							let icon: JSX.Element;
 							switch (route.name) {
 								case "index":
 									icon = (
