@@ -9,7 +9,7 @@ import {
 	ChevronLeft,
 	ChevronDown,
 } from "lucide-react-native";
-import { theme, tabBarStyle } from "../theme";
+import { theme, tabBarStyle } from "../../theme";
 
 export default function TabLayout() {
 	const [isExpanded, setIsExpanded] = useState(true);
