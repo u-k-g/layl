@@ -33,7 +33,6 @@ export default function ClockPage() {
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1, backgroundColor: '#000000' }}>
-			{/* Add StatusBar to ensure UI starts above camera cutout */}
       <StatusBar hidden={true} />
 
 			<View style={[styles.pageContent, { paddingTop: 0 }]}>

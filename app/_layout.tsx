@@ -23,6 +23,8 @@ import Animated, {
 	useSharedValue,
 } from "react-native-reanimated";
 import { useRouter } from "expo-router";
+import * as NavigationBar from "expo-navigation-bar";
+
 
 const NAVBAR_HEIGHT = 0;
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -30,6 +32,13 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 export default function Layout() {
 	useFrameworkReady();
 	const router = useRouter();
+
+	useEffect(() => {
+		NavigationBar.setBackgroundColorAsync('#121212');
+	}, []);
+
+	<StatusBar hidden={true} />
+
 
 	const [fontsLoaded] = useFonts({
 		"Geist-Regular": require("../assets/fonts/Geist-Regular.ttf"),
