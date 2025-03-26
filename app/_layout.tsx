@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { useFrameworkReady } from "@/hooks/useFrameworkReady";
 import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
-import { Slot } from 'expo-router';
+import { Slot } from "expo-router";
 import { View, StyleSheet, Pressable, Text } from "react-native";
 import {
 	Clock,
@@ -22,7 +22,7 @@ import Animated, {
 	interpolate,
 	useSharedValue,
 } from "react-native-reanimated";
-import { useRouter } from 'expo-router';
+import { useRouter } from "expo-router";
 
 const NAVBAR_HEIGHT = 0;
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -101,7 +101,7 @@ export default function Layout() {
 	}
 
 	return (
-		<View style={{ flex: 1, backgroundColor: '#000000' }}>
+		<View style={{ flex: 1, backgroundColor: "#000000" }}>
 			<View
 				style={[
 					styles.navbar,
@@ -129,7 +129,9 @@ export default function Layout() {
 							router.push("/compass");
 						}}
 					>
-						{selectedIcon === "Compass" && <View style={styles.highlightOval} />}
+						{selectedIcon === "Compass" && (
+							<View style={styles.highlightOval} />
+						)}
 						<Compass color="#fff" size={24} />
 					</Pressable>
 					<Pressable
@@ -139,7 +141,9 @@ export default function Layout() {
 							router.push("/calendar");
 						}}
 					>
-						{selectedIcon === "Calendar" && <View style={styles.highlightOval} />}
+						{selectedIcon === "Calendar" && (
+							<View style={styles.highlightOval} />
+						)}
 						<Calendar color="#fff" size={24} />
 					</Pressable>
 					<Pressable
@@ -149,7 +153,9 @@ export default function Layout() {
 							router.push("/settings");
 						}}
 					>
-						{selectedIcon === "Settings" && <View style={styles.highlightOval} />}
+						{selectedIcon === "Settings" && (
+							<View style={styles.highlightOval} />
+						)}
 						<Settings color="#fff" size={24} />
 					</Pressable>
 				</Animated.View>
@@ -174,7 +180,7 @@ const styles = StyleSheet.create({
 	navbar: {
 		backgroundColor: "rgba(0, 0, 0, 0.0)",
 		position: "absolute",
-		top: 80,
+		top: 104,
 		left: 0,
 		right: 0,
 		zIndex: 100,
@@ -208,14 +214,14 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 	},
 	highlightOval: {
-		position: 'absolute',
-		backgroundColor: 'rgba(255, 255, 255, 0.2)',
+		position: "absolute",
+		backgroundColor: "rgba(255, 255, 255, 0.2)",
 		width: 50,
 		height: 34,
 		borderRadius: 50,
 		zIndex: -1,
-		top: '50%',
-		left: '50%',
+		top: "50%",
+		left: "50%",
 		transform: [{ translateX: -25 }, { translateY: -17 }],
 	},
 });

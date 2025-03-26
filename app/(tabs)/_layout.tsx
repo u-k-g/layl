@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs } from "expo-router";
-import { TouchableOpacity, View, StyleSheet, Image } from "react-native";
+import { TouchableOpacity, View, StyleSheet, Image, StatusBar } from "react-native";
 import {
 	Clock,
 	Compass,
@@ -10,9 +10,17 @@ import {
 	ChevronDown,
 } from "lucide-react-native";
 import { theme, tabBarStyle } from "../../theme";
+import * as NavigationBar from "expo-navigation-bar";
+import { setStatusBarHidden } from "expo-status-bar";
+
 
 export default function TabLayout() {
 	const [isExpanded, setIsExpanded] = useState(true);
+    useEffect(() => {
+		NavigationBar.setBackgroundColorAsync('#121212');
+	}, []);
+    <StatusBar hidden={true} />
+
 
 	const toggleExpanded = () => {
 		setIsExpanded(!isExpanded);
