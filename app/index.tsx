@@ -43,7 +43,8 @@ export default function ClockPage() {
 				ref={bottomSheetRef}
 				index={0}
 				snapPoints={snapPoints}
-				onChange={handleSheetChanges}
+				// onChange={handleSheetChanges}
+				// onAnimate={handleSheetAnimate}
 				backgroundStyle={styles.bottomSheetBackground}
 				enablePanDownToClose={false} // Prevent closing by swiping down
 				animateOnMount={true} // Animate when component mounts
