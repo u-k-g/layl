@@ -24,10 +24,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { useRouter } from "expo-router";
 import * as NavigationBar from "expo-navigation-bar";
-import * as Linking from 'expo-linking';
 import { usePrayerTimes } from "@/hooks/usePrayerTimes";
-import { TamaguiProvider } from 'tamagui';
-import tamaguiConfig from '../tamagui.config';
+import { GeistProvider, CssBaseline } from '@geist-ui/core';
 import { theme } from "../theme";
 
 const NAVBAR_HEIGHT = 0;
@@ -40,7 +38,6 @@ export default function Layout() {
 
 	useEffect(() => {
 		NavigationBar.setBackgroundColorAsync(theme.colors.accents_1);
-		Linking.getInitialURL().catch(() => null);
 	}, []);
 
 	<StatusBar hidden={true} />
@@ -117,7 +114,8 @@ export default function Layout() {
 	}
 
 	return (
-		<TamaguiProvider config={tamaguiConfig}>
+		<GeistProvider themeType={themeType}>
+			<CssBaseline />
 			<View style={{ flex: 1, backgroundColor: theme.colors.background }}>
 				<View
 					style={[
@@ -190,7 +188,7 @@ export default function Layout() {
 				</View>
 				<Slot />
 			</View>
-		</TamaguiProvider>
+		</GeistProvider>
 	);
 }
 
