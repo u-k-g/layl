@@ -24,6 +24,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useRouter } from "expo-router";
 import * as NavigationBar from "expo-navigation-bar";
+import { usePrayerTimes } from "@/hooks/usePrayerTimes";
 
 
 const NAVBAR_HEIGHT = 0;
@@ -48,6 +49,7 @@ export default function Layout() {
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const [currentTime, setCurrentTime] = useState("");
 	const [selectedIcon, setSelectedIcon] = useState<string | null>("Clock");
+	const { timeUntilNextPrayer } = usePrayerTimes();
 	const animation = useSharedValue(0);
 
 	useEffect(() => {
@@ -170,7 +172,7 @@ export default function Layout() {
 				</Animated.View>
 
 				<Animated.View style={[styles.timeContainer, timeStyle]}>
-					<Text style={styles.timeText}>{currentTime}</Text>
+					<Text style={styles.timeText}>{timeUntilNextPrayer}</Text>
 				</Animated.View>
 
 				<AnimatedPressable
