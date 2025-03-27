@@ -1,33 +1,28 @@
 import { View, Text, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import React, { useRef, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as NavigationBar from "expo-navigation-bar";
 import { theme } from "../theme";
+// Import Linking explicitly to ensure it's properly initialized
+import * as Linking from 'expo-linking';
+import { Sheet } from "@tamagui/sheet";
+import { YStack } from "tamagui";
 
 export default function ClockPage() {
-	const bottomSheetRef = useRef<BottomSheet>(null);
 	const insets = useSafeAreaInsets();
+	const [position, setPosition] = useState(0);
 
 	useEffect(() => {
 		NavigationBar.setBackgroundColorAsync(theme.colors.accents_1);
+		
+		// Initialize Linking to ensure it's available
+		Linking.getInitialURL().catch(() => null);
 	}, []);
 
-	// Modify the snapPoints to change the starting height
-	const snapPoints = useMemo(() => ["19%", "82%"], []);
-
-	const handleSheetChanges = useCallback((index: number) => {
-		console.log("handleSheetChanges", index);
-	}, []);
-
-	const handleSheetAnimate = useCallback(
-		(fromIndex: number, toIndex: number) => {
-			console.log(`Animating from index ${fromIndex} to ${toIndex}`);
-		},
-		[],
-	);
+	// Snap points equivalent to the previous ["19%", "82%"]
+	const snapPoints = [19, 82];
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1, backgroundColor: theme.colors.background }}>
@@ -41,25 +36,46 @@ export default function ClockPage() {
 				</Text>
 			</View>
 
-			<BottomSheet
-				ref={bottomSheetRef}
-				index={0}
+			<Sheet
+				modal={false}
+				open
 				snapPoints={snapPoints}
-				// onChange={handleSheetChanges}
-				// onAnimate={handleSheetAnimate}
-				backgroundStyle={styles.bottomSheetBackground}
-				enablePanDownToClose={false} // Prevent closing by swiping down
-				animateOnMount={true} // Animate when component mounts
-				android_keyboardInputMode="adjustResize" // Better keyboard handling on Android
-				enableOverDrag={true}
-				detached={false}
-				bottomInset={0}
-				style={{ zIndex: 99000 }}
+				position={position}
+				onPositionChange={setPosition}
+				dismissOnSnapToBottom={false}
+				disableDrag={false}
+				zIndex={99000}
+				snapPointsMode="percent"
+				// Using a simpler animation approach
+				animationConfig={{
+					type: 'spring',
+					damping: 15,
+					stiffness: 100,
+				}}
 			>
-				<BottomSheetView style={styles.bottomSheetContentView}>
-					<Text style={styles.bottomSheetText}>stuff inside sheet</Text>
-				</BottomSheetView>
-			</BottomSheet>
+				<Sheet.Handle 
+					opacity={1}
+					backgroundColor={theme.colors.accents_1}
+					height={6}
+					width={40}
+					borderRadius={3}
+					marginTop={10}
+				/>
+				<Sheet.Frame
+					backgroundColor={theme.colors.accents_1}
+					borderTopLeftRadius={30}
+					borderTopRightRadius={30}
+					padding={0}
+				>
+					<YStack
+						padding={20}
+						backgroundColor={theme.colors.accents_1}
+						flex={1}
+					>
+						<Text style={styles.bottomSheetText}>stuff inside sheet</Text>
+					</YStack>
+				</Sheet.Frame>
+			</Sheet>
 		</GestureHandlerRootView>
 	);
 }
@@ -70,18 +86,9 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 	},
-	bottomSheetBackground: {
-		backgroundColor: theme.colors.accents_1,
-		borderTopLeftRadius: 30,
-		borderTopRightRadius: 30,
-	},
-	bottomSheetContentView: {
-		flex: 1,
-		padding: 20,
-		backgroundColor: theme.colors.accents_1,
-	},
 	bottomSheetText: {
 		fontSize: 16,
 		color: theme.colors.text,
+		fontFamily: "Geist-Regular",
 	},
 });
