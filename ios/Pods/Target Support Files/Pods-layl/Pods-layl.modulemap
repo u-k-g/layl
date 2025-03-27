@@ -1,6 +1,0 @@
-module Pods_layl {
-  umbrella header "Pods-layl-umbrella.h"
-
-  export *
-  module * { export * }
-}
