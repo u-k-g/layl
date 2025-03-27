@@ -23,8 +23,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function ClockPage() {
 	const bottomSheetRef = useRef<BottomSheet>(null);
 	const insets = useSafeAreaInsets();
-	const [latitude, setLatitude] = useState<string>("40.7128");
-	const [longitude, setLongitude] = useState<string>("-74.0060");
+	const [latitude, setLatitude] = useState<string>("38.9963");
+	const [longitude, setLongitude] = useState<string>("-77.4468");
 	const [calculationMethod, setCalculationMethod] = useState<string>("2");
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 	const [saveMessage, setSaveMessage] = useState<string | null>(null);

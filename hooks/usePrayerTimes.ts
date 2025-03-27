@@ -52,8 +52,8 @@ export function usePrayerTimes() {
 				const method = await AsyncStorage.getItem("prayer_calculation_method");
 
 				setSettings({
-					latitude: latitude ? Number.parseFloat(latitude) : 40.7128,
-					longitude: longitude ? Number.parseFloat(longitude) : -74.006,
+					latitude: latitude ? Number.parseFloat(latitude) : 38.9963,
+					longitude: longitude ? Number.parseFloat(longitude) : -77.4468,
 					method: method ? Number.parseInt(method) : 2,
 				});
 			} catch (err) {
@@ -112,7 +112,8 @@ export function usePrayerTimes() {
 			updateNextPrayer();
 		}
 		
-		const intervalId = setInterval(updateNextPrayer, 1000);
+		// Run the interval every minute instead of every second
+		const intervalId = setInterval(updateNextPrayer, 60000);
 		return () => clearInterval(intervalId);
 	}, [prayerTimes]);
 
@@ -132,18 +133,18 @@ export function usePrayerTimes() {
 		return date;
 	};
 
-	// Update the next prayer and time until next prayer
 	const updateNextPrayer = () => {
 		if (prayerTimes.length === 0) return;
 
 		const now = new Date();
 
-		// Find the next prayer
 		let next: PrayerTime | null = null;
+		let currentPrayerIndex = -1;
 
-		for (const prayer of prayerTimes) {
-			if (prayer.time > now) {
-				next = prayer;
+		for (let i = 0; i < prayerTimes.length; i++) {
+			if (prayerTimes[i].time > now) {
+				next = prayerTimes[i];
+				currentPrayerIndex = i;
 				break;
 			}
 		}
@@ -164,13 +165,22 @@ export function usePrayerTimes() {
 			next = tomorrowFajr;
 		}
 
-		// Only update if the next prayer has changed
-		if (next && next.name !== lastUpdatedPrayer) {
-			console.log('Next prayer:', next.name, 'at', next.time.toLocaleTimeString());
+		// Only update if the next prayer has changed or if we haven't set a next prayer yet
+		if (next && (nextPrayer === null || next.name !== nextPrayer.name)) {
+			console.log('Next prayer changed to:', next.name, 'at', next.time.toLocaleTimeString());
 			setLastUpdatedPrayer(next.name);
 			setNextPrayer(next);
 
 			// Calculate time until next prayer
+			const diffMs = next.time.getTime() - now.getTime();
+			const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+			const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+			setTimeUntilNextPrayer(
+				`${diffHrs.toString().padStart(2, "0")}:${diffMins.toString().padStart(2, "0")}`,
+			);
+		} else if (next && nextPrayer && next.name === nextPrayer.name) {
+			// Update the time remaining for the current next prayer
 			const diffMs = next.time.getTime() - now.getTime();
 			const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
 			const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
