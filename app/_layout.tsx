@@ -5,7 +5,7 @@ import { useFrameworkReady } from "@/hooks/useFrameworkReady";
 import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
 import { Slot } from "expo-router";
-import { View, StyleSheet, Pressable, Text } from "react-native";
+import { View, StyleSheet, Pressable, Text, Platform } from "react-native";
 import {
 	Clock,
 	Compass,
@@ -37,7 +37,9 @@ export default function Layout() {
 	const [themeType, setThemeType] = useState('dark');
 
 	useEffect(() => {
-		NavigationBar.setBackgroundColorAsync(theme.colors.accents_1);
+		if (Platform.OS === 'web') {
+			NavigationBar.setBackgroundColorAsync(theme.colors.accents_1);
+		}
 	}, []);
 
 	<StatusBar hidden={true} />
