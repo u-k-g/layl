@@ -19,7 +19,6 @@ import { StatusBar } from "expo-status-bar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as NavigationBar from "expo-navigation-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { theme } from "../theme";
 
 export default function ClockPage() {
 	const bottomSheetRef = useRef<BottomSheet>(null);
@@ -31,7 +30,7 @@ export default function ClockPage() {
 	const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
 	useEffect(() => {
-		NavigationBar.setBackgroundColorAsync(theme.colors.accents_1);
+		NavigationBar.setBackgroundColorAsync("#121212");
 
 		// Load saved settings
 		const loadSettings = async () => {
@@ -100,13 +99,13 @@ export default function ClockPage() {
 	];
 
 	return (
-		<GestureHandlerRootView style={{ flex: 1, backgroundColor: theme.colors.background }}>
+		<GestureHandlerRootView style={{ flex: 1, backgroundColor: "#000000" }}>
 			{/* Add StatusBar to ensure UI starts above camera cutout */}
 			<StatusBar hidden={true} />
 
 			<View style={[styles.pageContent, { paddingTop: 0 }]}>
 				<Text
-					style={{ color: theme.colors.text, fontFamily: "Geist-Regular", fontSize: 20 }}
+					style={{ color: "white", fontFamily: "Geist-Regular", fontSize: 20 }}
 				>
 					Settings
 				</Text>
@@ -136,7 +135,7 @@ export default function ClockPage() {
 							value={latitude}
 							onChangeText={setLatitude}
 							placeholder="Enter latitude"
-							placeholderTextColor={theme.colors.accents_4}
+							placeholderTextColor="#666"
 							keyboardType="numeric"
 						/>
 
@@ -146,7 +145,7 @@ export default function ClockPage() {
 							value={longitude}
 							onChangeText={setLongitude}
 							placeholder="Enter longitude"
-							placeholderTextColor={theme.colors.accents_4}
+							placeholderTextColor="#666"
 							keyboardType="numeric"
 						/>
 
@@ -202,76 +201,79 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	bottomSheetBackground: {
-		backgroundColor: theme.colors.accents_1,
+		backgroundColor: "#121212",
 		borderTopLeftRadius: 30,
 		borderTopRightRadius: 30,
 	},
 	bottomSheetContentView: {
 		flex: 1,
 		padding: 20,
-		backgroundColor: theme.colors.accents_1,
+		backgroundColor: "#121212",
 	},
 	sectionTitle: {
 		fontSize: 18,
 		fontWeight: "bold",
+		color: "white",
 		marginBottom: 20,
-		color: theme.colors.text,
 		fontFamily: "Geist-Regular",
 	},
 	inputLabel: {
-		fontSize: 16,
+		fontSize: 14,
+		color: "#ccc",
 		marginBottom: 8,
-		color: theme.colors.accents_6,
 		fontFamily: "Geist-Regular",
 	},
 	input: {
-		backgroundColor: theme.colors.accents_2,
+		backgroundColor: "#1e1e1e",
 		borderRadius: 8,
 		padding: 12,
+		color: "white",
 		marginBottom: 16,
-		color: theme.colors.text,
 		fontFamily: "Geist-Regular",
 	},
 	methodContainer: {
-		marginTop: 8,
-		marginBottom: 24,
+		flexDirection: "row",
+		flexWrap: "wrap",
+		marginBottom: 20,
 	},
 	methodButton: {
-		backgroundColor: theme.colors.accents_2,
+		backgroundColor: "#1e1e1e",
 		borderRadius: 8,
-		padding: 12,
-		marginBottom: 8,
+		padding: 10,
+		margin: 4,
+		minWidth: "45%",
 	},
 	selectedMethodButton: {
-		backgroundColor: theme.colors.primaryAccent,
+		backgroundColor: "#3a3a3a",
+		borderColor: "#666",
+		borderWidth: 1,
 	},
 	methodButtonText: {
-		color: theme.colors.text,
+		color: "#ccc",
+		fontSize: 12,
+		textAlign: "center",
 		fontFamily: "Geist-Regular",
 	},
 	selectedMethodButtonText: {
-		color: theme.colors.foreground,
-		fontWeight: "bold",
+		color: "white",
 	},
 	saveButton: {
-		backgroundColor: theme.colors.success,
+		backgroundColor: "#2c2c2c",
 		borderRadius: 8,
-		padding: 16,
+		padding: 15,
 		alignItems: "center",
-		marginTop: 16,
-		marginBottom: 40,
+		marginTop: 10,
+		marginBottom: 20,
 	},
 	saveButtonText: {
-		color: theme.colors.foreground,
+		color: "white",
 		fontSize: 16,
-		fontWeight: "bold",
 		fontFamily: "Geist-Regular",
 	},
 	saveMessage: {
+		color: "#4cd964",
 		textAlign: "center",
-		marginTop: 16,
-		color: theme.colors.success,
-		fontSize: 16,
+		marginTop: 10,
 		fontFamily: "Geist-Regular",
 	},
 });

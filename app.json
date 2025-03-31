@@ -12,7 +12,6 @@
 		"ios": {
 			"supportsTablet": true,
 			"bundleIdentifier": "com.yourname.yourapp",
-			"deploymentTarget": "2.0",
 			"infoPlist": {
 				"ITSAppUsesNonExemptEncryption": false
 			}

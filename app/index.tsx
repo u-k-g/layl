@@ -5,14 +5,13 @@ import React, { useRef, useMemo, useCallback, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as NavigationBar from "expo-navigation-bar";
-import { theme } from "../theme";
 
 export default function ClockPage() {
 	const bottomSheetRef = useRef<BottomSheet>(null);
 	const insets = useSafeAreaInsets();
 
 	useEffect(() => {
-		NavigationBar.setBackgroundColorAsync(theme.colors.accents_1);
+		NavigationBar.setBackgroundColorAsync("#121212");
 	}, []);
 
 	// Modify the snapPoints to change the starting height
@@ -29,13 +28,15 @@ export default function ClockPage() {
 		[],
 	);
 
+	// Set the navigation bar color when the component mounts
+
 	return (
-		<GestureHandlerRootView style={{ flex: 1, backgroundColor: theme.colors.background }}>
+		<GestureHandlerRootView style={{ flex: 1, backgroundColor: "#000000" }}>
 			<StatusBar hidden={true} />
 
 			<View style={[styles.pageContent, { paddingTop: 0 }]}>
 				<Text
-					style={{ color: theme.colors.text, fontFamily: "Geist-Regular", fontSize: 20 }}
+					style={{ color: "white", fontFamily: "Geist-Regular", fontSize: 20 }}
 				>
 					Home Page
 				</Text>
@@ -71,17 +72,17 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	bottomSheetBackground: {
-		backgroundColor: theme.colors.accents_1,
+		backgroundColor: "#121212",
 		borderTopLeftRadius: 30,
 		borderTopRightRadius: 30,
 	},
 	bottomSheetContentView: {
 		flex: 1,
 		padding: 20,
-		backgroundColor: theme.colors.accents_1,
+		backgroundColor: "#121212",
 	},
 	bottomSheetText: {
 		fontSize: 16,
-		color: theme.colors.text,
+		color: "white",
 	},
 });

@@ -5,7 +5,7 @@ import { useFrameworkReady } from "@/hooks/useFrameworkReady";
 import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
 import { Slot } from "expo-router";
-import { View, StyleSheet, Pressable, Text, Platform } from "react-native";
+import { View, StyleSheet, Pressable, Text } from "react-native";
 import {
 	Clock,
 	Compass,
@@ -25,8 +25,7 @@ import Animated, {
 import { useRouter } from "expo-router";
 import * as NavigationBar from "expo-navigation-bar";
 import { usePrayerTimes } from "@/hooks/usePrayerTimes";
-import { GeistProvider, CssBaseline } from '@geist-ui/core';
-import { theme } from "../theme";
+
 
 const NAVBAR_HEIGHT = 0;
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -34,12 +33,9 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 export default function Layout() {
 	useFrameworkReady();
 	const router = useRouter();
-	const [themeType, setThemeType] = useState('dark');
 
 	useEffect(() => {
-		if (Platform.OS === 'web') {
-			NavigationBar.setBackgroundColorAsync(theme.colors.accents_1);
-		}
+		NavigationBar.setBackgroundColorAsync('#121212');
 	}, []);
 
 	<StatusBar hidden={true} />
@@ -116,81 +112,78 @@ export default function Layout() {
 	}
 
 	return (
-		<GeistProvider themeType={themeType}>
-			<CssBaseline />
-			<View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-				<View
-					style={[
-						styles.navbar,
-						{
-							height: NAVBAR_HEIGHT + insets.top,
-							paddingTop: insets.top,
-						},
-					]}
-				>
-					<Animated.View style={[styles.centeredIcons, iconStyle]}>
-						<Pressable
-							onPress={() => {
-								setSelectedIcon("Clock");
-								console.log("Clock selected");
-								router.push("/");
-							}}
-						>
-							{selectedIcon === "Clock" && <View style={styles.highlightOval} />}
-							<Clock color={theme.colors.text} size={24} />
-						</Pressable>
-						<Pressable
-							onPress={() => {
-								setSelectedIcon("Compass");
-								console.log("Compass selected");
-								router.push("/compass");
-							}}
-						>
-							{selectedIcon === "Compass" && (
-								<View style={styles.highlightOval} />
-							)}
-							<Compass color={theme.colors.text} size={24} />
-						</Pressable>
-						<Pressable
-							onPress={() => {
-								setSelectedIcon("Calendar");
-								console.log("Calendar selected");
-								router.push("/calendar");
-							}}
-						>
-							{selectedIcon === "Calendar" && (
-								<View style={styles.highlightOval} />
-							)}
-							<Calendar color={theme.colors.text} size={24} />
-						</Pressable>
-						<Pressable
-							onPress={() => {
-								setSelectedIcon("Settings");
-								console.log("Settings selected");
-								router.push("/settings");
-							}}
-						>
-							{selectedIcon === "Settings" && (
-								<View style={styles.highlightOval} />
-							)}
-							<Settings color={theme.colors.text} size={24} />
-						</Pressable>
-					</Animated.View>
-
-					<Animated.View style={[styles.timeContainer, timeStyle]}>
-						<Text style={styles.timeText}>{timeUntilNextPrayer}</Text>
-					</Animated.View>
-
-					<AnimatedPressable
-						style={[styles.rightIcon, chevronStyle]}
-						onPress={toggleCollapse}
+		<View style={{ flex: 1, backgroundColor: "#000000" }}>
+			<View
+				style={[
+					styles.navbar,
+					{
+						height: NAVBAR_HEIGHT + insets.top,
+						paddingTop: insets.top,
+					},
+				]}
+			>
+				<Animated.View style={[styles.centeredIcons, iconStyle]}>
+					<Pressable
+						onPress={() => {
+							setSelectedIcon("Clock");
+							console.log("Clock selected");
+							router.push("/");
+						}}
 					>
-						<ChevronUp color={theme.colors.text} size={24} />
-					</AnimatedPressable>
-				</View>
-				<Slot />
+						{selectedIcon === "Clock" && <View style={styles.highlightOval} />}
+						<Clock color="#fff" size={24} />
+					</Pressable>
+					<Pressable
+						onPress={() => {
+							setSelectedIcon("Compass");
+							console.log("Compass selected");
+							router.push("/compass");
+						}}
+					>
+						{selectedIcon === "Compass" && (
+							<View style={styles.highlightOval} />
+						)}
+						<Compass color="#fff" size={24} />
+					</Pressable>
+					<Pressable
+						onPress={() => {
+							setSelectedIcon("Calendar");
+							console.log("Calendar selected");
+							router.push("/calendar");
+						}}
+					>
+						{selectedIcon === "Calendar" && (
+							<View style={styles.highlightOval} />
+						)}
+						<Calendar color="#fff" size={24} />
+					</Pressable>
+					<Pressable
+						onPress={() => {
+							setSelectedIcon("Settings");
+							console.log("Settings selected");
+							router.push("/settings");
+						}}
+					>
+						{selectedIcon === "Settings" && (
+							<View style={styles.highlightOval} />
+						)}
+						<Settings color="#fff" size={24} />
+					</Pressable>
+				</Animated.View>
+
+				<Animated.View style={[styles.timeContainer, timeStyle]}>
+					<Text style={styles.timeText}>{timeUntilNextPrayer}</Text>
+				</Animated.View>
+
+				<AnimatedPressable
+					style={[styles.rightIcon, chevronStyle]}
+					onPress={toggleCollapse}
+				>
+					<ChevronUp color="#fff" size={24} />
+				</AnimatedPressable>
 			</View>
-		</GeistProvider>
+			<Slot />
+		</View>
 	);
 }
 
@@ -203,49 +196,43 @@ const styles = StyleSheet.create({
 		right: 0,
 		zIndex: 100,
 		flexDirection: "row",
-		justifyContent: "center",
-		alignItems: "center",
+		paddingHorizontal: 16,
+		height: 40,
 	},
 	centeredIcons: {
 		flexDirection: "row",
-		justifyContent: "space-around",
-		alignItems: "center",
-		width: "80%",
-		height: 40,
-		backgroundColor: theme.colors.accents_1,
-		borderRadius: 20,
-		paddingHorizontal: 10,
-	},
-	timeContainer: {
-		position: "absolute",
-		width: "80%",
-		height: 40,
-		backgroundColor: theme.colors.accents_1,
-		borderRadius: 20,
 		justifyContent: "center",
+		gap: 42,
+		position: "absolute",
+		left: 0,
+		right: 0,
 		alignItems: "center",
-	},
-	timeText: {
-		color: theme.colors.text,
-		fontSize: 16,
-		fontFamily: "Geist-Regular",
 	},
 	rightIcon: {
 		position: "absolute",
-		right: 20,
-		backgroundColor: theme.colors.accents_1,
-		width: 40,
-		height: 40,
-		borderRadius: 20,
-		justifyContent: "center",
+		right: 16,
+	},
+	timeContainer: {
+		position: "absolute",
+		left: 0,
+		right: 0,
 		alignItems: "center",
+		justifyContent: "center",
+	},
+	timeText: {
+		fontFamily: "Geist-Regular",
+		color: "#fff",
+		fontSize: 24,
 	},
 	highlightOval: {
 		position: "absolute",
-		width: 40,
-		height: 40,
-		borderRadius: 20,
-		backgroundColor: theme.colors.selectionTint,
+		backgroundColor: "rgba(255, 255, 255, 0.2)",
+		width: 50,
+		height: 34,
+		borderRadius: 50,
 		zIndex: -1,
+		top: "50%",
+		left: "50%",
+		transform: [{ translateX: -25 }, { translateY: -17 }],
 	},
 });
