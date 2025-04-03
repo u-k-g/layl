@@ -25,6 +25,8 @@ import Animated, {
 import { useRouter } from "expo-router";
 import * as NavigationBar from "expo-navigation-bar";
 import { usePrayerTimes } from "@/hooks/usePrayerTimes";
+import './globals.css';
+
 
 
 const NAVBAR_HEIGHT = 0;

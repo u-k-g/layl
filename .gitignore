@@ -38,3 +38,7 @@ yarn-error.*
 app-example
 
 .env.local
+# Expo
+.expo
+dist/
+web-build/
