@@ -4,7 +4,7 @@ export const theme = {
 	colors: {
 		background: "#000000",
 		text: "#DCE3EA",
-		primaryAccent: "#43AAF9",
+		primaryAccent: "#8800ff",
 		secondaryAccent: "#f75f8f",
 		success: "#62c073",
 		functionPurple: "#bf7af0",
