@@ -42,3 +42,4 @@ app-example
 .expo
 dist/
 web-build/
+.commitlintrc.js

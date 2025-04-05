@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		boxShadow:
-			"-8px -8px 16px rgba(255, 255, 255, .2), 8px 8px 16px rgba(0, 0, 0, 0.2), inset 8px 8px 16px rgba(0, 0, 0, 0.2), inset -8px -8px 16px rgba(255, 255, 255, 0.2)",
+			"-6px -6px 16px rgba(255, 255, 255, .15), 6px 6px 16px rgba(0, 0, 0, 0.35), inset 6px 6px 16px rgba(0, 0, 0, 0.35), inset -6px -6px 16px rgba(255, 255, 255, 0.15)",
 	},
 	clockHandContainer: {
 		position: "absolute",
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
 		left: "50%",
 		height: 190,
 		width: 2,
-		transform: [{ translateX: 0 }, { translateY: -95 }],
+		transform: [{ translateX: 0 }, { translateY: -95 }],		
 		alignItems: "center",
 	},
 	clockHandPointer: {
