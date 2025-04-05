@@ -75,13 +75,35 @@ export default function ClockPage() {
 
 			<View style={[styles.pageContent, { paddingTop: 0 }]}>
 				<View style={styles.circle}>
+					{/* Hour and Minute Ticks */}
+					{[...Array(144)].map((_, i) => {
+						const isHourTick = i % 6 === 0; // Every 6th tick (24 total for hours)
+						const rotation = i * 2.5; // 360 / 144 = 2.5 degrees per tick
+						return (
+							<View
+								key={`tick-${rotation}`}
+								style={[
+									styles.tickMark,
+									isHourTick ? styles.hourTick : styles.minuteTick,
+									{
+										transform: [
+											{ rotate: `${rotation}deg` },
+											{ translateY: -132 },
+										],
+									},
+								]}
+							/>
+						);
+					})}
+
+					{/* Sunrise Icon */}
 					<View
 						style={[
 							styles.iconContainer,
 							{
 								transform: [
 									{ rotate: `${sunriseRotation}deg` },
-									{ translateY: -142 }, // Position near the edge of circle
+									{ translateY: -148 }, // Position near the edge of circle
 								],
 							},
 						]}
@@ -214,5 +236,20 @@ const styles = StyleSheet.create({
 		marginTop: -12,
 		justifyContent: "center",
 		alignItems: "center",
+	},
+	tickMark: {
+		position: "absolute",
+		left: "50%",
+		height: 5,
+		backgroundColor: "#12121b",
+		marginLeft: -1,
+	},
+	hourTick: {
+		width: 1.5,
+		backgroundColor: "#F1F1F4",
+	},
+	minuteTick: {
+		width: 1,
+		backgroundColor: "rgba(241, 241, 244, 0.15)",
 	},
 });
