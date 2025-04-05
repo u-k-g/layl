@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		boxShadow:
-			"-6px -6px 16px rgba(255, 255, 255, .15), 6px 6px 16px rgba(0, 0, 0, 0.35), inset 6px 6px 16px rgba(0, 0, 0, 0.35), inset -6px -6px 16px rgba(255, 255, 255, 0.15)",
+			"-6px -6px 16px rgba(255, 255, 255, .11), 6px 6px 16px rgba(0, 0, 0, 0.39), inset 6px 6px 16px rgba(0, 0, 0, 0.39), inset -6px -6px 16px rgba(255, 255, 255, 0.11)",
 	},
 	clockHandContainer: {
 		position: "absolute",
