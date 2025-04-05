@@ -213,14 +213,14 @@ const styles = StyleSheet.create({
 		zIndex: 1,
 	},
 	bottomSheetBackground: {
-		backgroundColor: "#12121b",
+		backgroundColor: "rgb(50, 48, 64)",
 		borderTopLeftRadius: 30,
 		borderTopRightRadius: 30,
 	},
 	bottomSheetContentView: {
 		flex: 1,
 		padding: 20,
-		backgroundColor: "#12121b",
+		backgroundColor: "rgb(50, 48, 64)",
 	},
 	bottomSheetText: {
 		fontSize: 16,
