@@ -1,36 +1,54 @@
 import { View, Text, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import React, { useRef, useMemo, useCallback, useEffect, useState } from "react";
+import React, {
+	useRef,
+	useMemo,
+	useCallback,
+	useEffect,
+	useState,
+} from "react";
 import { StatusBar } from "expo-status-bar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as NavigationBar from "expo-navigation-bar";
 import { theme } from "../theme";
+import { Sunrise } from "lucide-react-native";
+import { usePrayerTimes } from "../hooks/usePrayerTimes";
 
 export default function ClockPage() {
 	const bottomSheetRef = useRef<BottomSheet>(null);
 	const insets = useSafeAreaInsets();
+	const { prayerTimes } = usePrayerTimes();
+
+	// Calculate sunrise rotation based on prayer times
+	const sunriseRotation = useMemo(() => {
+		if (!prayerTimes?.length) return 0;
+		const sunrise = prayerTimes.find((prayer) => prayer.name === "Sunrise");
+		if (!sunrise) return 0;
+		const hours = sunrise.time.getHours();
+		const minutes = sunrise.time.getMinutes();
+		// Convert to degrees on 24hr clock
+		return hours * 15 + minutes * 0.25;
+	}, [prayerTimes]);
+
 	const [rotation, setRotation] = useState(() => {
 		const now = new Date();
-		const hours = now.getHours() % 12;
+		const hours = now.getHours();
 		const minutes = now.getMinutes();
-		// Calculate initial rotation: (hour * 30) + (minutes * 0.5)
-		// 30 degrees per hour (360/12), 0.5 degrees per minute (30/60)
-		return (hours * 30) + (minutes * 0.5);
+		return hours * 15 + minutes * 0.25;
 	});
 
 	useEffect(() => {
-		NavigationBar.setBackgroundColorAsync("#121212");
+		NavigationBar.setBackgroundColorAsync("#12123b");
 	}, []);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
 			const now = new Date();
-			const hours = now.getHours() % 12;
+			const hours = now.getHours();
 			const minutes = now.getMinutes();
-			// Update rotation based on current hour and minute
-			setRotation((hours * 30) + (minutes * 0.5));
-		}, 60000); // Update every minute
+			setRotation(hours * 15 + minutes * 0.25);
+		}, 60000);
 
 		return () => clearInterval(interval);
 	}, []);
@@ -52,19 +70,44 @@ export default function ClockPage() {
 	// Set the navigation bar color when the component mounts
 
 	return (
-		<GestureHandlerRootView style={{ flex: 1, backgroundColor: "#000000" }}>
+		<GestureHandlerRootView style={{ flex: 1, backgroundColor: "#25252D" }}>
 			<StatusBar hidden={true} />
 
 			<View style={[styles.pageContent, { paddingTop: 0 }]}>
 				<View style={styles.circle}>
-					<View 
+					<View
+						style={[
+							styles.iconContainer,
+							{
+								transform: [
+									{ rotate: `${sunriseRotation}deg` },
+									{ translateY: -142 }, // Position near the edge of circle
+								],
+							},
+						]}
+					>
+						<View
+							style={{
+								transform: [
+									// Counter-rotate the icon to keep it upright
+									{ rotate: `${-sunriseRotation}deg` },
+								],
+							}}
+						>
+							<Sunrise size={16} color={theme.colors.functionPurple} />
+						</View>
+					</View>
+
+					<View
 						style={[
 							styles.clockHandContainer,
-							{ transform: [
-								{ translateX: 0 },
-								{ translateY: -95 },
-								{ rotate: `${rotation}deg` }
-							]}
+							{
+								transform: [
+									{ translateX: 0 },
+									{ translateY: -95 },
+									{ rotate: `${rotation}deg` },
+								],
+							},
 						]}
 					>
 						<View style={styles.clockHandPointer} />
@@ -106,13 +149,11 @@ const styles = StyleSheet.create({
 		width: 340,
 		height: 340,
 		borderRadius: 200,
-		backgroundColor: "transparent",
+		backgroundColor: "#25252D",
 		justifyContent: "center",
 		alignItems: "center",
-		borderWidth: 2.25,
-		borderColor: theme.colors.primaryAccent,
-		shadowRadius: 20,
-		elevation: 10,
+		boxShadow:
+			"-8px -8px 16px rgba(255, 255, 255, .2), 8px 8px 16px rgba(0, 0, 0, 0.2), inset 8px 8px 16px rgba(0, 0, 0, 0.2), inset -8px -8px 16px rgba(255, 255, 255, 0.2)",
 	},
 	clockHandContainer: {
 		position: "absolute",
@@ -120,28 +161,22 @@ const styles = StyleSheet.create({
 		left: "50%",
 		height: 190,
 		width: 2,
-		transform: [
-			{ translateX: 0 },
-			{ translateY: -95 },
-		],
+		transform: [{ translateX: 0 }, { translateY: -95 }],
 		alignItems: "center",
 	},
 	clockHandPointer: {
-		transform: [
-			{ translateX: 0 },
-			{ translateY: -60 },
-		],
-		position: 'absolute',
+		transform: [{ translateX: 0 }, { translateY: -22 }],
+		position: "absolute",
 		top: 0,
 		width: 0,
 		height: 0,
-		backgroundColor: 'transparent',
-		borderStyle: 'solid',
+		backgroundColor: "transparent",
+		borderStyle: "solid",
 		borderLeftWidth: 2,
 		borderRightWidth: 2,
-		borderBottomWidth: 150,
-		borderLeftColor: 'transparent',
-		borderRightColor: 'transparent',
+		borderBottomWidth: 136,
+		borderLeftColor: "transparent",
+		borderRightColor: "transparent",
 		borderBottomColor: theme.colors.functionPurple,
 	},
 	clockHandBase: {
@@ -151,25 +186,33 @@ const styles = StyleSheet.create({
 		width: 12,
 		height: 12,
 		borderRadius: 6,
-		transform: [
-			{ translateX: -6 },
-			{ translateY: -6 },
-		],
+		transform: [{ translateX: -6 }, { translateY: -6 }],
 		backgroundColor: theme.colors.functionPurple,
 		zIndex: 1,
 	},
 	bottomSheetBackground: {
-		backgroundColor: "#121212",
+		backgroundColor: "#12121b",
 		borderTopLeftRadius: 30,
 		borderTopRightRadius: 30,
 	},
 	bottomSheetContentView: {
 		flex: 1,
 		padding: 20,
-		backgroundColor: "#121212",
+		backgroundColor: "#12121b",
 	},
 	bottomSheetText: {
 		fontSize: 16,
-		color: "white",
+		color: "#f1f1f4",
+	},
+	iconContainer: {
+		position: "absolute",
+		left: "50%",
+		top: "50%",
+		width: 24,
+		height: 24,
+		marginLeft: -12,
+		marginTop: -12,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 });
