@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
 	},
 	highlightOval: {
 		position: "absolute",
-		backgroundColor: "rgba(255, 255, 255, 0.2)",
+		backgroundColor: "rgba(255, 255, 255, 0.11)",
 		width: 50,
 		height: 34,
 		borderRadius: 50,

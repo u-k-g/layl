@@ -103,7 +103,7 @@ export default function ClockPage() {
 							{
 								transform: [
 									{ rotate: `${sunriseRotation}deg` },
-									{ translateY: -148 }, // Position near the edge of circle
+									{ translateY: -150 }, // Position near the edge of circle
 								],
 							},
 						]}
@@ -151,7 +151,7 @@ export default function ClockPage() {
 				enableOverDrag={true}
 				detached={false}
 				bottomInset={0}
-				style={{ zIndex: 99000 }}
+				style={{ zIndex: 999999 }} //max z-index lol :]
 			>
 				<BottomSheetView style={styles.bottomSheetContentView}>
 					<Text style={styles.bottomSheetText}>stuff inside sheet</Text>
