@@ -178,7 +178,9 @@ export default function ClockPage() {
 				style={{ zIndex: 999999 }} //max z-index lol :]
 			>
 				<BottomSheetView style={styles.bottomSheetContentView}>
-					<Text style={styles.bottomSheetText}>stuff inside sheet</Text>
+					<View style={{ alignItems: 'center' }}>
+						<Text style={styles.bottomSheetText}>time.</Text>
+					</View>
 				</BottomSheetView>
 			</BottomSheet>
 		</GestureHandlerRootView>
