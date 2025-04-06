@@ -216,11 +216,12 @@ const styles = StyleSheet.create({
 		backgroundColor: "rgb(50, 48, 64)",
 		borderTopLeftRadius: 30,
 		borderTopRightRadius: 30,
+		boxShadow: "-6px -6px 16px rgba(255, 255, 255, .08), 6px 6px 16px rgba(0, 0, 0, 0.39), inset 6px 6px 16px rgba(0, 0, 0, 0.39), inset -6px -6px 16px rgba(255, 255, 255, 0.08)",
 	},
 	bottomSheetContentView: {
 		flex: 1,
 		padding: 20,
-		backgroundColor: "rgb(50, 48, 64)",
+		backgroundColor: "transparent",
 	},
 	bottomSheetText: {
 		fontSize: 16,
