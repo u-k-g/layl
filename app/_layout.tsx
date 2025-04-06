@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
 	},
 	highlightOval: {
 		position: "absolute",
-		backgroundColor: "rgba(255, 255, 255, 0.11)",
+		backgroundColor: "rgba(37, 37, 46, 1)",
 		width: 50,
 		height: 34,
 		borderRadius: 50,
@@ -236,5 +236,7 @@ const styles = StyleSheet.create({
 		top: "50%",
 		left: "50%",
 		transform: [{ translateX: -25 }, { translateY: -17 }],
+		boxShadow:
+			"inset 2px 1px 2px rgba(0, 0, 0, 0.39), inset -2px -1px 2px rgba(255, 255, 255, 0.11)",
 	},
 });

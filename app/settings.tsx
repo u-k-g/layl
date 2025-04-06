@@ -1,11 +1,4 @@
-import {
-	View,
-	Text,
-	StyleSheet,
-	TextInput,
-	TouchableOpacity,
-	ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import React, {
@@ -18,38 +11,46 @@ import React, {
 import { StatusBar } from "expo-status-bar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as NavigationBar from "expo-navigation-bar";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { theme } from "../theme";
+import { Sunrise } from "lucide-react-native";
+import { usePrayerTimes } from "../hooks/usePrayerTimes";
 
 export default function ClockPage() {
 	const bottomSheetRef = useRef<BottomSheet>(null);
 	const insets = useSafeAreaInsets();
-	const [latitude, setLatitude] = useState<string>("38.9963");
-	const [longitude, setLongitude] = useState<string>("-77.4468");
-	const [calculationMethod, setCalculationMethod] = useState<string>("2");
-	const [isSaving, setIsSaving] = useState<boolean>(false);
-	const [saveMessage, setSaveMessage] = useState<string | null>(null);
+	const { prayerTimes } = usePrayerTimes();
+
+	// Calculate sunrise rotation based on prayer times
+	const sunriseRotation = useMemo(() => {
+		if (!prayerTimes?.length) return 0;
+		const sunrise = prayerTimes.find((prayer) => prayer.name === "Sunrise");
+		if (!sunrise) return 0;
+		const hours = sunrise.time.getHours();
+		const minutes = sunrise.time.getMinutes();
+		// Convert to degrees on 24hr clock
+		return hours * 15 + minutes * 0.25;
+	}, [prayerTimes]);
+
+	const [rotation, setRotation] = useState(() => {
+		const now = new Date();
+		const hours = now.getHours();
+		const minutes = now.getMinutes();
+		return hours * 15 + minutes * 0.25;
+	});
 
 	useEffect(() => {
-		NavigationBar.setBackgroundColorAsync("#121212");
+		NavigationBar.setBackgroundColorAsync("#12123b");
+	}, []);
 
-		// Load saved settings
-		const loadSettings = async () => {
-			try {
-				const savedLatitude = await AsyncStorage.getItem("prayer_latitude");
-				const savedLongitude = await AsyncStorage.getItem("prayer_longitude");
-				const savedMethod = await AsyncStorage.getItem(
-					"prayer_calculation_method",
-				);
+	useEffect(() => {
+		const interval = setInterval(() => {
+			const now = new Date();
+			const hours = now.getHours();
+			const minutes = now.getMinutes();
+			setRotation(hours * 15 + minutes * 0.25);
+		}, 60000);
 
-				if (savedLatitude) setLatitude(savedLatitude);
-				if (savedLongitude) setLongitude(savedLongitude);
-				if (savedMethod) setCalculationMethod(savedMethod);
-			} catch (error) {
-				console.error("Failed to load settings:", error);
-			}
-		};
-
-		loadSettings();
+		return () => clearInterval(interval);
 	}, []);
 
 	// Modify the snapPoints to change the starting height
@@ -59,63 +60,90 @@ export default function ClockPage() {
 		console.log("handleSheetChanges", index);
 	}, []);
 
-	const saveSettings = async () => {
-		try {
-			setIsSaving(true);
-			await AsyncStorage.setItem("prayer_latitude", latitude);
-			await AsyncStorage.setItem("prayer_longitude", longitude);
-			await AsyncStorage.setItem(
-				"prayer_calculation_method",
-				calculationMethod,
-			);
+	const handleSheetAnimate = useCallback(
+		(fromIndex: number, toIndex: number) => {
+			console.log(`Animating from index ${fromIndex} to ${toIndex}`);
+		},
+		[],
+	);
 
-			setSaveMessage("Settings saved successfully!");
-			setTimeout(() => setSaveMessage(null), 3000);
-		} catch (error) {
-			setSaveMessage("Failed to save settings");
-			console.error("Failed to save settings:", error);
-		} finally {
-			setIsSaving(false);
-		}
-	};
-
-	const calculationMethods = [
-		{ id: "0", name: "Shia Ithna-Ashari" },
-		{ id: "1", name: "University of Islamic Sciences, Karachi" },
-		{ id: "2", name: "Islamic Society of North America" },
-		{ id: "3", name: "Muslim World League" },
-		{ id: "4", name: "Umm Al-Qura University, Makkah" },
-		{ id: "5", name: "Egyptian General Authority of Survey" },
-		{ id: "7", name: "Institute of Geophysics, University of Tehran" },
-		{ id: "8", name: "Gulf Region" },
-		{ id: "9", name: "Kuwait" },
-		{ id: "10", name: "Qatar" },
-		{ id: "11", name: "Majlis Ugama Islam Singapura, Singapore" },
-		{ id: "12", name: "Union Organization Islamic de France" },
-		{ id: "13", name: "Diyanet İşleri Başkanlığı, Turkey" },
-		{ id: "14", name: "Spiritual Administration of Muslims of Russia" },
-		{ id: "15", name: "Moonsighting Committee Worldwide" },
-		{ id: "16", name: "Dubai (unofficial)" },
-	];
+	// Set the navigation bar color when the component mounts
 
 	return (
-		<GestureHandlerRootView style={{ flex: 1, backgroundColor: "#000000" }}>
-			{/* Add StatusBar to ensure UI starts above camera cutout */}
+		<GestureHandlerRootView style={{ flex: 1, backgroundColor: "#25252D" }}>
 			<StatusBar hidden={true} />
 
 			<View style={[styles.pageContent, { paddingTop: 0 }]}>
-				<Text
-					style={{ color: "white", fontFamily: "Geist-Regular", fontSize: 20 }}
-				>
-					Settings
-				</Text>
+				<View style={styles.circle}>
+					{/* Hour and Minute Ticks */}
+					{[...Array(144)].map((_, i) => {
+						const isHourTick = i % 6 === 0; // Every 6th tick (24 total for hours)
+						const rotation = i * 2.5; // 360 / 144 = 2.5 degrees per tick
+						return (
+							<View
+								key={`tick-${rotation}`}
+								style={[
+									styles.tickMark,
+									isHourTick ? styles.hourTick : styles.minuteTick,
+									{
+										transform: [
+											{ rotate: `${rotation}deg` },
+											{ translateY: -132 },
+										],
+									},
+								]}
+							/>
+						);
+					})}
+
+					{/* Sunrise Icon */}
+					<View
+						style={[
+							styles.iconContainer,
+							{
+								transform: [
+									{ rotate: `${sunriseRotation}deg` },
+									{ translateY: -150 }, // Position near the edge of circle
+								],
+							},
+						]}
+					>
+						<View
+							style={{
+								transform: [
+									// Counter-rotate the icon to keep it upright
+									{ rotate: `${-sunriseRotation}deg` },
+								],
+							}}
+						>
+							<Sunrise size={16} color={theme.colors.functionPurple} />
+						</View>
+					</View>
+
+					<View
+						style={[
+							styles.clockHandContainer,
+							{
+								transform: [
+									{ translateX: 0 },
+									{ translateY: -95 },
+									{ rotate: `${rotation}deg` },
+								],
+							},
+						]}
+					>
+						<View style={styles.clockHandPointer} />
+						<View style={styles.clockHandBase} />
+					</View>
+				</View>
 			</View>
 
 			<BottomSheet
 				ref={bottomSheetRef}
 				index={0}
 				snapPoints={snapPoints}
-				onChange={handleSheetChanges}
+				// onChange={handleSheetChanges}
+				// onAnimate={handleSheetAnimate}
 				backgroundStyle={styles.bottomSheetBackground}
 				enablePanDownToClose={false} // Prevent closing by swiping down
 				animateOnMount={true} // Animate when component mounts
@@ -123,71 +151,10 @@ export default function ClockPage() {
 				enableOverDrag={true}
 				detached={false}
 				bottomInset={0}
-				style={{ zIndex: 99000 }}
+				style={{ zIndex: 999999 }} //max z-index lol :]
 			>
 				<BottomSheetView style={styles.bottomSheetContentView}>
-					<ScrollView showsVerticalScrollIndicator={false}>
-						<Text style={styles.sectionTitle}>Prayer Times Settings</Text>
-
-						<Text style={styles.inputLabel}>Latitude</Text>
-						<TextInput
-							style={styles.input}
-							value={latitude}
-							onChangeText={setLatitude}
-							placeholder="Enter latitude"
-							placeholderTextColor="#666"
-							keyboardType="numeric"
-						/>
-
-						<Text style={styles.inputLabel}>Longitude</Text>
-						<TextInput
-							style={styles.input}
-							value={longitude}
-							onChangeText={setLongitude}
-							placeholder="Enter longitude"
-							placeholderTextColor="#666"
-							keyboardType="numeric"
-						/>
-
-						<Text style={styles.inputLabel}>Calculation Method</Text>
-						<View style={styles.methodContainer}>
-							{calculationMethods.map((method) => (
-								<TouchableOpacity
-									key={method.id}
-									style={[
-										styles.methodButton,
-										calculationMethod === method.id &&
-											styles.selectedMethodButton,
-									]}
-									onPress={() => setCalculationMethod(method.id)}
-								>
-									<Text
-										style={[
-											styles.methodButtonText,
-											calculationMethod === method.id &&
-												styles.selectedMethodButtonText,
-										]}
-									>
-										{method.name}
-									</Text>
-								</TouchableOpacity>
-							))}
-						</View>
-
-						<TouchableOpacity
-							style={styles.saveButton}
-							onPress={saveSettings}
-							disabled={isSaving}
-						>
-							<Text style={styles.saveButtonText}>
-								{isSaving ? "Saving..." : "Save Settings"}
-							</Text>
-						</TouchableOpacity>
-
-						{saveMessage && (
-							<Text style={styles.saveMessage}>{saveMessage}</Text>
-						)}
-					</ScrollView>
+					<Text style={styles.bottomSheetText}>stuff inside sheet</Text>
 				</BottomSheetView>
 			</BottomSheet>
 		</GestureHandlerRootView>
@@ -200,80 +167,89 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 	},
+	circle: {
+		width: 340,
+		height: 340,
+		borderRadius: 200,
+		backgroundColor: "#25252D",
+		justifyContent: "center",
+		alignItems: "center",
+		boxShadow:
+			"-6px -6px 16px rgba(255, 255, 255, .11), 6px 6px 16px rgba(0, 0, 0, 0.39), inset 6px 6px 16px rgba(0, 0, 0, 0.39), inset -6px -6px 16px rgba(255, 255, 255, 0.11)",
+	},
+	clockHandContainer: {
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		height: 190,
+		width: 2,
+		transform: [{ translateX: 0 }, { translateY: -95 }],		
+		alignItems: "center",
+	},
+	clockHandPointer: {
+		transform: [{ translateX: 0 }, { translateY: -22 }],
+		position: "absolute",
+		top: 0,
+		width: 0,
+		height: 0,
+		backgroundColor: "transparent",
+		borderStyle: "solid",
+		borderLeftWidth: 2,
+		borderRightWidth: 2,
+		borderBottomWidth: 136,
+		borderLeftColor: "transparent",
+		borderRightColor: "transparent",
+		borderBottomColor: theme.colors.functionPurple,
+	},
+	clockHandBase: {
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		width: 12,
+		height: 12,
+		borderRadius: 6,
+		transform: [{ translateX: -6 }, { translateY: -6 }],
+		backgroundColor: theme.colors.functionPurple,
+		zIndex: 1,
+	},
 	bottomSheetBackground: {
-		backgroundColor: "#121212",
+		backgroundColor: "rgb(50, 48, 64)",
 		borderTopLeftRadius: 30,
 		borderTopRightRadius: 30,
 	},
 	bottomSheetContentView: {
 		flex: 1,
 		padding: 20,
-		backgroundColor: "#121212",
+		backgroundColor: "rgb(50, 48, 64)",
 	},
-	sectionTitle: {
-		fontSize: 18,
-		fontWeight: "bold",
-		color: "white",
-		marginBottom: 20,
-		fontFamily: "Geist-Regular",
-	},
-	inputLabel: {
-		fontSize: 14,
-		color: "#ccc",
-		marginBottom: 8,
-		fontFamily: "Geist-Regular",
-	},
-	input: {
-		backgroundColor: "#1e1e1e",
-		borderRadius: 8,
-		padding: 12,
-		color: "white",
-		marginBottom: 16,
-		fontFamily: "Geist-Regular",
-	},
-	methodContainer: {
-		flexDirection: "row",
-		flexWrap: "wrap",
-		marginBottom: 20,
-	},
-	methodButton: {
-		backgroundColor: "#1e1e1e",
-		borderRadius: 8,
-		padding: 10,
-		margin: 4,
-		minWidth: "45%",
-	},
-	selectedMethodButton: {
-		backgroundColor: "#3a3a3a",
-		borderColor: "#666",
-		borderWidth: 1,
-	},
-	methodButtonText: {
-		color: "#ccc",
-		fontSize: 12,
-		textAlign: "center",
-		fontFamily: "Geist-Regular",
-	},
-	selectedMethodButtonText: {
-		color: "white",
-	},
-	saveButton: {
-		backgroundColor: "#2c2c2c",
-		borderRadius: 8,
-		padding: 15,
-		alignItems: "center",
-		marginTop: 10,
-		marginBottom: 20,
-	},
-	saveButtonText: {
-		color: "white",
+	bottomSheetText: {
 		fontSize: 16,
-		fontFamily: "Geist-Regular",
+		color: "#f1f1f4",
 	},
-	saveMessage: {
-		color: "#4cd964",
-		textAlign: "center",
-		marginTop: 10,
-		fontFamily: "Geist-Regular",
+	iconContainer: {
+		position: "absolute",
+		left: "50%",
+		top: "50%",
+		width: 24,
+		height: 24,
+		marginLeft: -12,
+		marginTop: -12,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	tickMark: {
+		position: "absolute",
+		left: "50%",
+		height: 5,
+		backgroundColor: "#12121b",
+		marginLeft: -1,
+	},
+	hourTick: {
+		width: 1.5,
+		backgroundColor: "#F1F1F4",
+	},
+	minuteTick: {
+		width: 1,
+		backgroundColor: "rgba(241, 241, 244, 0.15)",
 	},
 });

@@ -2,9 +2,9 @@ import { Platform } from "react-native";
 
 export const theme = {
 	colors: {
-		background: "#000000",
+		background: "rgba(37, 37, 46, 1)",
 		text: "#DCE3EA",
-		primaryAccent: "#8800ff",
+		primaryAccent: "rgba(59, 59, 191, 1)",
 		secondaryAccent: "#f75f8f",
 		success: "#62c073",
 		functionPurple: "#bf7af0",
