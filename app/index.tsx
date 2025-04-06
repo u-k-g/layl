@@ -116,7 +116,7 @@ export default function ClockPage() {
 								],
 							}}
 						>
-							<Sunrise size={16} color={theme.colors.functionPurple} />
+							<Sunrise size={16} color={theme.colors.primaryAccent} />
 						</View>
 					</View>
 
@@ -145,9 +145,15 @@ export default function ClockPage() {
 				// onChange={handleSheetChanges}
 				// onAnimate={handleSheetAnimate}
 				backgroundStyle={styles.bottomSheetBackground}
-				enablePanDownToClose={false} // Prevent closing by swiping down
-				animateOnMount={true} // Animate when component mounts
-				android_keyboardInputMode="adjustResize" // Better keyboard handling on Android
+				handleIndicatorStyle={{
+					backgroundColor: theme.colors.primaryAccent,
+					width: 30,
+					height: 4,
+					opacity: 0.5,
+				}}
+				enablePanDownToClose={false}
+				animateOnMount={true}
+				android_keyboardInputMode="adjustResize"
 				enableOverDrag={true}
 				detached={false}
 				bottomInset={0}
@@ -199,7 +205,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 136,
 		borderLeftColor: "transparent",
 		borderRightColor: "transparent",
-		borderBottomColor: theme.colors.functionPurple,
+		borderBottomColor: theme.colors.primaryAccent,
 	},
 	clockHandBase: {
 		position: "absolute",
@@ -209,14 +215,14 @@ const styles = StyleSheet.create({
 		height: 12,
 		borderRadius: 6,
 		transform: [{ translateX: -6 }, { translateY: -6 }],
-		backgroundColor: theme.colors.functionPurple,
+		backgroundColor: theme.colors.primaryAccent,
 		zIndex: 1,
 	},
 	bottomSheetBackground: {
-		backgroundColor: "rgb(50, 48, 64)",
+		backgroundColor: "rgba(37, 37, 46, 1))",
 		borderTopLeftRadius: 30,
 		borderTopRightRadius: 30,
-		boxShadow: "-6px -6px 16px rgba(255, 255, 255, .08), 6px 6px 16px rgba(0, 0, 0, 0.39), inset 6px 6px 16px rgba(0, 0, 0, 0.39), inset -6px -6px 16px rgba(255, 255, 255, 0.08)",
+		boxShadow: "-6px -6px 16px rgba(255, 255, 255, .07), 6px 6px 16px rgba(0, 0, 0, 0.39), inset 6px 6px 16px rgba(0, 0, 0, 0.39), inset -6px -6px 16px rgba(255, 255, 255, 0.07)",
 	},
 	bottomSheetContentView: {
 		flex: 1,
