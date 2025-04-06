@@ -14,11 +14,15 @@ import * as NavigationBar from "expo-navigation-bar";
 import { theme } from "../theme";
 import { Sunrise } from "lucide-react-native";
 import { usePrayerTimes } from "../hooks/usePrayerTimes";
+import { useFonts } from "expo-font";
 
 export default function ClockPage() {
 	const bottomSheetRef = useRef<BottomSheet>(null);
 	const insets = useSafeAreaInsets();
 	const { prayerTimes } = usePrayerTimes();
+	const [fontsLoaded] = useFonts({
+		"Geist-Regular": require("../assets/fonts/Geist-Regular.ttf"),
+	});
 
 	// Calculate sunrise rotation based on prayer times
 	const sunriseRotation = useMemo(() => {
@@ -75,6 +79,20 @@ export default function ClockPage() {
 
 			<View style={[styles.pageContent, { paddingTop: 0 }]}>
 				<View style={styles.circle}>
+					{/* Hour Numbers */}
+					<View style={[styles.hourNumber, { transform: [{ translateY: -115 }] }]}>
+						<Text style={styles.hourText}>0</Text>
+					</View>
+					<View style={[styles.hourNumber, { transform: [{ translateX: 115 }] }]}>
+						<Text style={styles.hourText}>6</Text>
+					</View>
+					<View style={[styles.hourNumber, { transform: [{ translateY: 115 }] }]}>
+						<Text style={styles.hourText}>12</Text>
+					</View>
+					<View style={[styles.hourNumber, { transform: [{ translateX: -115 }] }]}>
+						<Text style={styles.hourText}>18</Text>
+					</View>
+
 					{/* Hour and Minute Ticks */}
 					{[...Array(144)].map((_, i) => {
 						const isHourTick = i % 6 === 0; // Every 6th tick (24 total for hours)
@@ -231,7 +249,8 @@ const styles = StyleSheet.create({
 	},
 	bottomSheetText: {
 		fontSize: 16,
-		color: "#f1f1f4",
+		color: theme.colors.secondaryAccent,
+		fontFamily: "Geist-Regular",
 	},
 	iconContainer: {
 		position: "absolute",
@@ -253,10 +272,26 @@ const styles = StyleSheet.create({
 	},
 	hourTick: {
 		width: 1.5,
-		backgroundColor: "#F1F1F4",
+		backgroundColor: theme.colors.secondaryAccent,
 	},
 	minuteTick: {
 		width: 1,
 		backgroundColor: "rgba(241, 241, 244, 0.15)",
+	},
+	hourNumber: {
+		position: "absolute",
+		width: 20,
+		height: 20,
+		borderRadius: 10,
+		backgroundColor: "rgba(37, 37, 46, 1)",
+		justifyContent: "center",
+		alignItems: "center",
+		boxShadow: "inset 1px 1px 1px rgba(0, 0, 0, 0.39), inset -1px -1px 1px rgba(255, 255, 255, 0.11)",
+	},
+	hourText: {
+		fontSize: 12,
+		fontWeight: "bold",
+		fontFamily: "Inter",
+		color: theme.colors.secondaryAccent,
 	},
 });

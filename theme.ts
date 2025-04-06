@@ -4,8 +4,8 @@ export const theme = {
 	colors: {
 		background: "rgba(37, 37, 46, 1)",
 		text: "#DCE3EA",
-		primaryAccent: "rgba(59, 59, 191, 1)",
-		secondaryAccent: "#f75f8f",
+		primaryAccent: "rgb(61, 61, 235)",
+		secondaryAccent: "rgb(241, 241, 244)",
 		success: "#62c073",
 		functionPurple: "#bf7af0",
 		subtleGray: "#454d54",

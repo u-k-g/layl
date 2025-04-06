@@ -26,7 +26,7 @@ import { useRouter } from "expo-router";
 import * as NavigationBar from "expo-navigation-bar";
 import { usePrayerTimes } from "@/hooks/usePrayerTimes";
 import './globals.css';
-
+import { theme } from "@/theme";
 
 
 const NAVBAR_HEIGHT = 0;
@@ -133,7 +133,7 @@ export default function Layout() {
 						}}
 					>
 						{selectedIcon === "Clock" && <View style={styles.highlightOval} />}
-						<Clock color="#fff" size={24} />
+						<Clock color={theme.colors.primaryAccent} size={24} />
 					</Pressable>
 					<Pressable
 						onPress={() => {
@@ -145,7 +145,7 @@ export default function Layout() {
 						{selectedIcon === "Compass" && (
 							<View style={styles.highlightOval} />
 						)}
-						<Compass color="#fff" size={24} />
+						<Compass color={theme.colors.primaryAccent} size={24} />
 					</Pressable>
 					<Pressable
 						onPress={() => {
@@ -157,7 +157,7 @@ export default function Layout() {
 						{selectedIcon === "Calendar" && (
 							<View style={styles.highlightOval} />
 						)}
-						<Calendar color="#fff" size={24} />
+						<Calendar color={theme.colors.primaryAccent} size={24} />
 					</Pressable>
 					<Pressable
 						onPress={() => {
@@ -169,7 +169,7 @@ export default function Layout() {
 						{selectedIcon === "Settings" && (
 							<View style={styles.highlightOval} />
 						)}
-						<Settings color="#fff" size={24} />
+						<Settings color={theme.colors.primaryAccent} size={24} />
 					</Pressable>
 				</Animated.View>
 
@@ -181,7 +181,7 @@ export default function Layout() {
 					style={[styles.rightIcon, chevronStyle]}
 					onPress={toggleCollapse}
 				>
-					<ChevronUp color="#fff" size={24} />
+					<ChevronUp color={theme.colors.primaryAccent} size={24} />
 				</AnimatedPressable>
 			</View>
 			<Slot />
@@ -222,9 +222,10 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	timeText: {
-		fontFamily: "Geist-Regular",
+		fontFamily: "Inter",
 		color: "#fff",
 		fontSize: 24,
+		fontWeight: "bold",
 	},
 	highlightOval: {
 		position: "absolute",
