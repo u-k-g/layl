@@ -239,10 +239,17 @@ const styles = StyleSheet.create({
 		zIndex: 1,
 	},
 	bottomSheetBackground: {
-		backgroundColor: "rgba(37, 37, 46, 1))",
+		backgroundColor: "rgba(37, 37, 46, 1)",
 		borderTopLeftRadius: 30,
 		borderTopRightRadius: 30,
-		boxShadow: "-6px -6px 16px rgba(255, 255, 255, .07), 6px 6px 16px rgba(0, 0, 0, 0.39), inset 6px 6px 16px rgba(0, 0, 0, 0.39), inset -6px -6px 16px rgba(255, 255, 255, 0.07)",
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: -4,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 8,
+		elevation: 8,
 	},
 	bottomSheetContentView: {
 		flex: 1,
