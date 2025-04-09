@@ -139,7 +139,7 @@ export default function Layout() {
 						onPress={() => {
 							setSelectedIcon("Compass");
 							console.log("Compass selected");
-							router.push("/compass");
+							router.push("/");
 						}}
 					>
 						{selectedIcon === "Compass" && (
@@ -151,7 +151,7 @@ export default function Layout() {
 						onPress={() => {
 							setSelectedIcon("Calendar");
 							console.log("Calendar selected");
-							router.push("/calendar");
+							router.push("/");
 						}}
 					>
 						{selectedIcon === "Calendar" && (
@@ -163,7 +163,7 @@ export default function Layout() {
 						onPress={() => {
 							setSelectedIcon("Settings");
 							console.log("Settings selected");
-							router.push("/settings");
+							router.push("/");
 						}}
 					>
 						{selectedIcon === "Settings" && (
